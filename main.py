@@ -3,6 +3,7 @@ import time
 import sys
 from os import system as os
 from Classes.Person import Person
+from Classes.User import User
 
 ###############################
 # Change these variables to your db credentials
@@ -27,8 +28,8 @@ while (attempts <= maxAttempts ):
             host=HOST,
             database=DATABASE
         )
-        person = Person()
-        print(person.getName())
+        person = User()
+        print(vars(person))
         cursor = cnx.cursor()
         break
     
@@ -41,3 +42,11 @@ while (attempts <= maxAttempts ):
         else: 
             sys.exit('[{}] Connection to database failed after {} attempts. Exiting program.'.format(ts,maxAttempts))
             break
+cnx.commit()
+cnx.close()
+
+def exporter():
+    # this will export an array to json or csv.
+
+def generator():
+    # generate data arrays for use with export
