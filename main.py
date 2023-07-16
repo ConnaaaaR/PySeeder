@@ -17,30 +17,32 @@ HOST = 'localhost'
 DATABASE = 'wcDB'
 ###############################
 
-def generator(class_type, num_instances):
-    
+
+def generator():
+    class_input = input('what should be created? ')
+    class_type = globals().get(class_input.capitalize())
+    num_instances = int(input('Enter number of instances to create '))
     instances = []
     for _ in range(num_instances):
         instance = class_type()
         instances.append(instance)
-    return instances
+    return {'class_name': class_input, 'instances': instances}
 
 
 def exporter():
-    class_name = input('what should be created? ')
-    instances = input ('how many should be created?')
-    instancesInt = int(instances)
     file_format = input('what format? (csv / json) ')
 
-    data = generator('User', instancesInt)
-    filename = f"{class_name}.{file_format}"
+    data = generator()
+    
+    filename = f"{data['class_name']}.{file_format}"
+    instances = data['instances']
     try:
         if file_format == "csv":
             with open(filename, "w", newline="") as csvfile:
                 writer = csv.writer(csvfile)
-                writer.writerow(data[0].__dict__.keys())
+                writer.writerow(instances[0].__dict__.keys())
 
-                for instance in data:
+                for instance in instances:
                     writer.writerow(instance.__dict__.values())
                 
         elif file_format == "json":
@@ -49,46 +51,46 @@ def exporter():
 
         else:
             print("Invalid file format. Supported formats: csv, json")
-
     except Exception as e:
         print(str(e))
 
 
 
-attempts = 0
-maxAttempts = 5
-waitTime = 3
 
-while (attempts <= maxAttempts ):
-    ts = time.strftime("%H:%M:%S", time.localtime())
-    try:
-        cnx = pymysql.connect(
-            user=USERNAME,
-            password=PASSWORD,
-            host=HOST,
-            database=DATABASE
-        )
-        cursor = cnx.cursor()
-        person = Address()
-        # print(person.outputAddress())
-        num_instances = 10
-        address_instances = generator(Person, num_instances)
-        
-        
-        break
-    
-    except Exception as e:
-        if (attempts < maxAttempts-1):
-            print('[{}] Connection to database failed ({}/{}). Trying again in {} seconds...  (Error: {})'.format(ts,attempts+1,maxAttempts,round(waitTime),str(e)))
-            time.sleep(waitTime)
-            attempts += 1
-            waitTime = waitTime * 1.5
-        else: 
-            sys.exit('[{}] Connection to database failed after {} attempts. Exiting program.'.format(ts,maxAttempts))
+database_connection = input ('Do you want to connect directly to a local database? (y/n): ')
+
+if (database_connection.lower() == 'y'):
+    attempts = 0
+    maxAttempts = 5
+    waitTime = 3
+    while (attempts <= maxAttempts ):
+        ts = time.strftime("%H:%M:%S", time.localtime())
+        try:
+            cnx = pymysql.connect(
+                user=USERNAME,
+                password=PASSWORD,
+                host=HOST,
+                database=DATABASE
+            )
+            cursor = cnx.cursor()
+            address_instances = generator()
             break
-    
-exporter()
-cnx.commit()
-cnx.close()
+        
+        except Exception as e:
+            if (attempts < maxAttempts-1):
+                print('[{}] Connection to database failed ({}/{}). Trying again in {} seconds...  (Error: {})'.format(ts,attempts+1,maxAttempts,round(waitTime),str(e)))
+                time.sleep(waitTime)
+                attempts += 1
+                waitTime = waitTime * 1.5
+            else: 
+                sys.exit('[{}] Connection to database failed after {} attempts. Exiting program.'.format(ts,maxAttempts))
+                break
+    cnx.commit()
+    cnx.close()
+else:
+    # generator()
+    exporter()
+
+
 
 
