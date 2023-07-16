@@ -14,7 +14,7 @@ from Classes.User import User
 USERNAME = 'root'
 PASSWORD = ''
 HOST = 'localhost'
-DATABASE = 'wcDB'
+DATABASE = 'database_name'
 ###############################
 
 
