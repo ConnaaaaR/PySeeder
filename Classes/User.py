@@ -7,14 +7,11 @@ class User(Person):
         self.email = self.generateEmail()
         self.password = self.generatePassword()
         
- 
-
     def generateEmail(self):
         domain = '@email.com'
         email = self.fname + self.lname + domain
         return email.lower()
     
-
     def generatePassword(self):
         value = 'password'
         hash_object = hashlib.sha256()
