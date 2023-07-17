@@ -53,7 +53,7 @@ def exporter():
             print("Invalid file format. Supported formats: csv, json")
     except Exception as e:
         print(str(e))
-
+    sys.exit('done!')
 
 
 

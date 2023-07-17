@@ -1,2 +1,7 @@
 *.csv
 *.json
+!*/names.json
+/build
+/dist
+Classes\__pycache__
+*.spec
