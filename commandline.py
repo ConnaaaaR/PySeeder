@@ -90,7 +90,3 @@ if (database_connection.lower() == 'y'):
 else:
     # generator()
     exporter()
-
-
-
-
