@@ -5,3 +5,4 @@
 /dist
 Classes\__pycache__
 *.spec
+__pycache__
