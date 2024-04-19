@@ -1,3 +1,6 @@
+![image](https://github.com/ConnaaaaR/PySeeder/assets/95925456/180928cd-73eb-48ec-a2df-c50c43b9c9d6)
+
+
 # PySeeder
 
 A small program to quickly seed mysql databases or generate CSV / JSON data files.
